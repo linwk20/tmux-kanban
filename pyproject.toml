@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tmux-kanban"
+version = "0.1.0"
+description = "An AI-native, lightweight web kanban board for tmux sessions and terminal agents."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    { name = "Weikai Lin", email = "wlin33@ur.rochester.edu" },
+]
+keywords = [
+    "tmux",
+    "kanban",
+    "dashboard",
+    "terminal",
+    "ai-agent",
+    "claude-code",
+    "codex",
+    "gemini",
+    "devtools",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Shells",
+    "Topic :: Software Development",
+    "Topic :: Terminals",
+    "Framework :: FastAPI",
+    "Environment :: Web Environment",
+]
+dependencies = [
+    "fastapi>=0.100",
+    "uvicorn>=0.20",
+]
+
+[project.urls]
+Homepage = "https://github.com/linwk20/tmux-kanban"
+Repository = "https://github.com/linwk20/tmux-kanban"
+Issues = "https://github.com/linwk20/tmux-kanban/issues"
+Changelog = "https://github.com/linwk20/tmux-kanban/blob/main/CHANGELOG.md"
+
+[project.scripts]
+tmux-kanban = "tmux_kanban.__main__:main"
+tmux-kanban-install-systemd = "tmux_kanban.install_systemd:main"
+
+[tool.setuptools.packages.find]
+include = ["tmux_kanban*"]
+
+[tool.setuptools.package-data]
+tmux_kanban = ["static/*"]

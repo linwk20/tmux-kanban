@@ -1,0 +1,63 @@
+set -g mouse on
+
+
+# Copy to tmux buffer on mouse drag release (works in all environments)
+bind -T copy-mode MouseDragEnd1Pane send-keys -X copy-selection-and-cancel
+bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-selection-and-cancel
+
+# Scroll enters copy mode automatically, exits when you reach the bottom
+bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'copy-mode -e'"
+
+# Prefix: Ctrl+B (tmux default)
+set -g prefix C-b
+bind C-b send-prefix
+
+# Pane navigation (Prefix + ijkl, no wrap)
+bind j if -F '#{pane_at_left}' '' 'select-pane -L'
+bind l if -F '#{pane_at_right}' '' 'select-pane -R'
+bind i if -F '#{pane_at_top}' '' 'select-pane -U'
+bind k if -F '#{pane_at_bottom}' '' 'select-pane -D'
+
+# Pane split: n=auto tiled, arrow keys=方向分割
+bind n split-window -h \; select-layout tiled
+bind Right split-window -h      # 往右分
+bind Left  split-window -hb     # 往左分
+bind Down  split-window -v      # 往下分
+bind Up    split-window -vb     # 往上分
+bind w kill-pane
+bind o next-layout
+bind g select-pane -m
+bind y run 'tmux swap-pane -s \{marked\} && tmux select-pane -M'
+
+# Window navigation
+bind u if -F '#{window_end_flag}' '' 'next-window'
+bind h if -F '#{window_start_flag}' '' 'previous-window'
+bind m new-window
+
+# Scroll mode: Prefix+Tab to enter, i/k to scroll up/down, q or Escape to exit
+bind Tab if -F '#{pane_in_mode}' 'send-keys -X cancel' 'copy-mode'
+bind -T copy-mode i send-keys -X -N 2 scroll-up
+bind -T copy-mode k send-keys -X -N 2 scroll-down
+bind -T copy-mode I send-keys -X halfpage-up
+bind -T copy-mode K send-keys -X halfpage-down
+
+# Increase scrollback
+set -g history-limit 10000
+
+# Red pane borders with full box around each pane
+set -g pane-border-style fg=colour236
+set -g pane-active-border-style fg=red
+set -g pane-border-lines heavy
+set -g pane-border-indicators arrows
+set -g allow-rename off
+set -g pane-border-format " #{?@name,#{@name},#{b:pane_current_path}} "
+set -g pane-border-status top
+
+# Status bar showing window number and name
+set -g status on
+set -g status-style bg=default,fg=colour245
+set -g window-status-format " #I:#W "
+set -g window-status-current-format " #I:#W "
+set -g window-status-current-style fg=red,bold
+set -g status-left " [#S] "
+set -g status-right ""
